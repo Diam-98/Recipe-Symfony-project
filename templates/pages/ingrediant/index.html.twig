@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello IngrediantController!{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Mes ingredients</h1>
+        <a class="btn btn-primary" href="{{ path('ingrediant.new') }}">Nouveau</a>
+        {% for message in app.flashes('success') %}
+            <div class="alert-success mt-5">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% if not ingrediants.items is same as([]) %}
+        <div class="count">
+            Il y'a {{ ingrediants.getTotalItemCount }} ingredients au total
+        </div>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col"># Id</th>
+                    <th scope="col">Nom ingredients</th>
+                    <th scope="col">Prix</th>
+                    <th scope="col" class="text-center">Date de Creation</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ingrediant in ingrediants %}
+                <tr class="table-info">
+                    <th scope="row">{{ ingrediant.id }}</th>
+                    <td>{{ ingrediant.name }}</td>
+                    <td>{{ ingrediant.price }}</td>
+                    <td class="text-center">{{ ingrediant.createdAt|date('d/m/Y') }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        <div class="navigation d-flex justify-content-center">
+            {{ knp_pagination_render(ingrediants) }}
+        </div>
+        {% else %}
+        <div class="d-flex justify-content-center">
+            <p>Il n'y pas d'ingerdients disponible</p>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}
