@@ -22,6 +22,7 @@
                     <th scope="col">Nom ingredients</th>
                     <th scope="col">Prix</th>
                     <th scope="col" class="text-center">Date de Creation</th>
+                    <th scope="col">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -31,6 +32,11 @@
                     <td>{{ ingrediant.name }}</td>
                     <td>{{ ingrediant.price }}</td>
                     <td class="text-center">{{ ingrediant.createdAt|date('d/m/Y') }}</td>
+                    <td>
+                        <a href="{{ path('ingrediant.edit', { id: ingrediant.id }) }}" class="btn btn-primary">Modifier</a>
+                        <a href="{{ path('ingrediant.delete', { id: ingrediant.id }) }}" class="btn btn-primary">Suprimer</a>
+                    </td>
+
                 </tr>
                 {% endfor %}
                 </tbody>

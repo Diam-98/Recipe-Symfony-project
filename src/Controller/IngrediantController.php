@@ -32,6 +32,7 @@ class IngrediantController extends AbstractController
     public function new(Request $request, EntityManagerInterface $manager):Response{
 
         $ingrediant = new Ingrediant();
+
         $form = $this->createForm(IngrediantType::class, $ingrediant);
 
         $form->handleRequest($request);
@@ -54,5 +55,55 @@ class IngrediantController extends AbstractController
         return $this->render('pages/ingrediant/new.html.twig',[
             'form' => $form->createView()
         ]);
+    }
+
+    #[Route('ingrediant/edition/{id}', 'ingrediant.edit', methods: ['GET', 'POST'])]
+//    public function edit(IngrediantRepository $ingrediantRepository, int $id):Response{
+    public function edit(Ingrediant $ingrediant, Request $request, EntityManagerInterface $manager):Response{
+
+        $form = $this->createForm(IngrediantType::class, $ingrediant);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $ingrediant = $form->getData();
+
+            $manager->persist($ingrediant);
+
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Votre ingrediant a ete enregistre avec success !'
+            );
+
+            return $this->redirectToRoute("ingrediant");
+        }
+
+        return $this->render('pages/ingrediant/edit.html.twig',[
+            'form' => $form->createView()
+            ]);
+    }
+
+    #[Route('ingrediant/delete/{id}', 'ingrediant.delete', methods: ['GET'])]
+    public function delete(EntityManagerInterface $manager, Ingrediant $ingrediant):Response{
+        if (!$ingrediant){
+            $this->addFlash(
+                'success',
+                'Ingrediant inexistante !'
+            );
+
+            return $this->redirectToRoute('ingrediant');
+        }
+
+        $manager->remove($ingrediant);
+        $manager->flush();
+
+        $this->addFlash(
+            'success',
+            'Votre ingrediant a ete supprime avec success !'
+        );
+
+        return $this->redirectToRoute('ingrediant');
     }
 }

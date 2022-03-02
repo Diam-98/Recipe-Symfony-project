@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Modifier un produit</h1>
+    <div class="container">
+        <a class="btn btn-primary mt-2" href="{{ path('ingrediant') }}">Revenir vers la lise</a>
+        {{ form(form) }}
+    </div>
+{% endblock %}
+
